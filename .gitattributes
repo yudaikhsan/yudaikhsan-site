@@ -1,0 +1,12 @@
+# Normalize line endings — store LF in the repo so the Linux CI builder is deterministic.
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary

@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+
+const inputClass =
+  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50';
+---
+
+<BaseLayout title="Contact" description="Ready to work together? Let's discuss your project.">
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-2xl">
+      <div class="mb-12 text-center">
+        <h1 class="mb-4 text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          Get in Touch
+        </h1>
+        <p class="text-lg text-muted-foreground">
+          Ready to work together? Let's discuss your project.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="flex flex-col space-y-1.5 p-6">
+          <div class="text-2xl font-semibold leading-none tracking-tight">Send me a message</div>
+        </div>
+        <div class="p-6 pt-0">
+          <div
+            class="mb-4 hidden rounded-md border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20"
+            data-contact-success
+          >
+            <p class="text-green-800 dark:text-green-200">
+              Thank you for your message! I'll get back to you soon.
+            </p>
+          </div>
+          <div
+            class="mb-4 hidden rounded-md border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20"
+            data-contact-error
+          >
+            <p class="text-red-800 dark:text-red-200" data-contact-error-text></p>
+          </div>
+
+          <form
+            class="space-y-4"
+            data-contact-form
+            data-key={site.forms.web3formsKey}
+            novalidate
+          >
+            <div>
+              <label for="name" class="text-sm font-medium leading-none">Name *</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Your name"
+                required
+                autocomplete="name"
+                aria-describedby="name-error"
+                class={`mt-2 ${inputClass}`}
+              />
+              <div id="name-error" class="sr-only" aria-live="polite"></div>
+            </div>
+
+            <div>
+              <label for="email" class="text-sm font-medium leading-none">Email *</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="your@email.com"
+                required
+                autocomplete="email"
+                aria-describedby="email-error"
+                class={`mt-2 ${inputClass}`}
+              />
+              <div id="email-error" class="sr-only" aria-live="polite"></div>
+            </div>
+
+            <div>
+              <label for="subject" class="text-sm font-medium leading-none">Subject *</label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                placeholder="What's this about?"
+                required
+                aria-describedby="subject-error"
+                class={`mt-2 ${inputClass}`}
+              />
+              <div id="subject-error" class="sr-only" aria-live="polite"></div>
+            </div>
+
+            <div>
+              <label for="message" class="text-sm font-medium leading-none">Message *</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                placeholder="Tell me about your project..."
+                required
+                aria-describedby="message-error"
+                class={`mt-2 ${inputClass} min-h-[120px]`}></textarea>
+              <div id="message-error" class="sr-only" aria-live="polite"></div>
+            </div>
+
+            <!-- honeypot -->
+            <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+            <button type="submit" class="btn btn-md btn-primary w-full" data-contact-submit>
+              Send Message
+            </button>
+            <div id="submit-status" class="sr-only" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="mt-12 text-center">
+        <p class="mb-4 text-muted-foreground">
+          Or reach out directly at
+          <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>
+        </p>
+        <a
+          href={site.calUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-button
+          class="btn btn-md btn-outline"
+        >
+          Schedule a Discovery Call
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const form = document.querySelector('[data-contact-form]');
+    if (!form) return;
+    const key = form.dataset.key;
+    const submit = form.querySelector('[data-contact-submit]');
+    const successBox = document.querySelector('[data-contact-success]');
+    const errorBox = document.querySelector('[data-contact-error]');
+    const errorText = document.querySelector('[data-contact-error-text]');
+    const status = form.querySelector('#submit-status');
+
+    const setError = (name, message) => {
+      const field = form.querySelector(`[name="${name}"]`);
+      const err = form.querySelector(`#${name}-error`);
+      if (err) err.textContent = message || '';
+      if (field) {
+        field.setAttribute('aria-invalid', message ? 'true' : 'false');
+        field.classList.toggle('border-destructive', Boolean(message));
+      }
+    };
+
+    const showError = (msg) => {
+      errorText.textContent = msg;
+      errorBox.classList.toggle('hidden', !msg);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      let ok = true;
+      successBox.classList.add('hidden');
+      showError('');
+
+      ['name', 'subject', 'message'].forEach((f) => {
+        const val = (data[f] || '').trim();
+        setError(f, val ? '' : 'This field is required.');
+        if (!val) ok = false;
+      });
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((data.email || '').trim());
+      setError('email', emailOk ? '' : 'Please enter a valid email address.');
+      if (!emailOk) ok = false;
+
+      if (!ok) {
+        status.textContent = 'Please fix the errors above.';
+        form.querySelector('[aria-invalid="true"]')?.focus();
+        return;
+      }
+      if (!key) {
+        showError('The contact form is not configured yet. Add PUBLIC_WEB3FORMS_KEY to enable it.');
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Sending...';
+      status.textContent = 'Sending your message...';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ access_key: key, from_name: data.name, ...data }),
+        });
+        const out = await res.json();
+        if (out.success) {
+          form.reset();
+          successBox.classList.remove('hidden');
+          status.textContent = 'Message sent.';
+        } else {
+          showError(out.message || 'Something went wrong. Please try again.');
+        }
+      } catch {
+        showError('Network error. Please try again or contact me directly.');
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Send Message';
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  researchStatusLabels,
+  researchTypeIcon,
+  researchTypeLabels,
+} from '../../config';
+import { formatDate, isoDate } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const items = await getCollection('research', ({ data }) => !data.draft);
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const { title, abstract, type, status, date, authors, publisher, link, tags } = item.data;
+---
+
+<BaseLayout title={title} description={abstract} type="article" image={item.data.image}>
+  <div class="min-h-screen bg-background">
+    <div class="container mx-auto px-4 py-8 md:px-6 md:py-12">
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-8">
+          <a
+            href="/research"
+            class="group mb-6 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+          >
+            <Icon
+              name="arrow-right"
+              class="mr-2 h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-1"
+            />
+            Back to Research
+          </a>
+        </div>
+
+        <header class="mb-12">
+          <h1 class="mb-6 text-4xl font-bold font-mono leading-tight sm:text-5xl md:text-6xl">
+            {title}
+          </h1>
+
+          <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span
+              class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-muted-foreground"
+            >
+              <Icon
+                name={researchTypeIcon[type] ?? 'microscope'}
+                class="mr-2 h-4 w-4 text-primary"
+              />
+              {researchTypeLabels[type] ?? type}
+            </span>
+            <span
+              class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-secondary-foreground"
+            >
+              {researchStatusLabels[status] ?? status}
+            </span>
+            <time datetime={isoDate(date)} class="flex items-center">{formatDate(date)}</time>
+          </div>
+
+          <p class="mb-6 text-lg text-muted-foreground">{abstract}</p>
+
+          {
+            (authors.length > 0 || publisher || link) && (
+              <dl class="mb-8 space-y-2 rounded-lg border border-border bg-secondary/50 p-4 text-sm">
+                {authors.length > 0 && (
+                  <div class="flex gap-2">
+                    <dt class="font-mono text-muted-foreground">{authors.length > 1 ? 'Authors:' : 'Author:'}</dt>
+                    <dd>{authors.join(', ')}</dd>
+                  </div>
+                )}
+                {publisher && (
+                  <div class="flex gap-2">
+                    <dt class="font-mono text-muted-foreground">Publisher:</dt>
+                    <dd>{publisher}</dd>
+                  </div>
+                )}
+                {link && (
+                  <div class="flex gap-2">
+                    <dt class="font-mono text-muted-foreground">Source:</dt>
+                    <dd>
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center text-primary hover:underline"
+                      >
+                        View original
+                        <Icon name="external-link" class="ml-1 h-4 w-4" />
+                      </a>
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            )
+          }
+
+          {
+            tags.length > 0 && (
+              <div class="mb-8 flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )
+          }
+        </header>
+
+        <article class="prose-enhanced" aria-label={`Research content: ${title}`}>
+          <Content />
+        </article>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

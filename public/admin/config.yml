@@ -1,0 +1,248 @@
+# Sveltia CMS configuration for the portfolio site.
+# Docs: https://sveltiacms.app
+#
+# 1. Replace `repo` with your GitHub repo (owner/name).
+# 2. After deploying the auth Worker, replace `base_url` with its URL.
+# 3. Open /admin on your site and log in with GitHub.
+#
+# The categories below MUST match src/content.config.ts and the
+# `categoryLabels` map in src/config.ts, or the site build will fail.
+
+backend:
+  name: github
+  repo: yudaikhsan/yudaikhsan-site
+  branch: main
+  # Auth Worker URL (see README "Enable the /admin editor").
+  # Leave blank to use Sveltia's local editing mode in `npm run dev`.
+  base_url: https://sveltia-cms-auth.yudhaikhsan.workers.dev
+  # commit_messages:
+  #   create: "cms: create {{collection}} “{{slug}}”"
+  #   update: "cms: update {{collection}} “{{slug}}”"
+  #   delete: "cms: delete {{collection}} “{{slug}}”"
+
+# Where uploaded images are stored (relative to repo root) and served from.
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Draft workflow: adding `draft: true` hides a post from the public site.
+publish_mode: simple
+
+collections:
+  # ---------------------------------------------------------------------------
+  # WRITING — src/content/posts
+  # ---------------------------------------------------------------------------
+  - name: posts
+    label: Writing
+    label_singular: Post
+    description: "Blog posts and essays shown under /writing."
+    folder: "src/content/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} — {{category}}"
+    sortable_fields: [date, title]
+    # Link straight from the editor to the live page.
+    preview_path: "writing/{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: true,
+          hint: "Publication date, e.g. 2026-01-20",
+        }
+      - label: Category
+        name: category
+        widget: select
+        hint: "Must be one of these four values."
+        options:
+          - { label: "Media Relations", value: "media-relations" }
+          - { label: "Crisis Comms", value: "crisis-comms" }
+          - { label: "Brand Strategy", value: "brand-strategy" }
+          - { label: "Personal Essays", value: "personal-essays" }
+      - {
+          label: Excerpt,
+          name: excerpt,
+          widget: text,
+          hint: "One or two sentences shown in listings and previews.",
+        }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - {
+          label: Draft,
+          name: draft,
+          widget: boolean,
+          default: false,
+          hint: "Draft posts are hidden from the published site.",
+        }
+      - {
+          label: Cover image,
+          name: image,
+          widget: image,
+          required: false,
+          choose_url: false,
+        }
+      - { label: Body, name: body, widget: markdown }
+
+  # ---------------------------------------------------------------------------
+  # PORTFOLIO — src/content/projects
+  # ---------------------------------------------------------------------------
+  - name: projects
+    label: Portfolio
+    label_singular: Project
+    description: "Case studies shown under /portfolio."
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} — {{category}}"
+    sortable_fields: [order, title, year]
+    preview_path: "portfolio/{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Category
+        name: category
+        widget: select
+        hint: "Must be one of these — add new ones in src/config.ts and here."
+        options:
+          - { label: "Integrated campaign", value: "Integrated campaign" }
+          - { label: "Crisis communications", value: "Crisis communications" }
+          - {
+              label: "Internal & field communications",
+              value: "Internal & field communications",
+            }
+      - { label: Description, name: description, widget: text }
+      - { label: Cover image, name: image, widget: image, choose_url: false }
+      - {
+          label: Role,
+          name: role,
+          widget: string,
+          required: false,
+          hint: "e.g. PR & Communications Lead",
+        }
+      - { label: Year, name: year, widget: number, required: false, value_type: int }
+      - {
+          label: Stack,
+          name: stack,
+          widget: list,
+          required: false,
+          default: [],
+          hint: "Comma-separated capabilities, e.g. Media relations, Measurement",
+        }
+      - label: Links
+        name: links
+        widget: list
+        required: false
+        default: []
+        fields:
+          - { label: Label, name: label, widget: string }
+          - { label: URL, name: url, widget: string }
+      - {
+          label: Featured,
+          name: featured,
+          widget: boolean,
+          default: false,
+          hint: "Featured projects appear on the home page.",
+        }
+      - {
+          label: Order,
+          name: order,
+          widget: number,
+          default: 0,
+          value_type: int,
+          hint: "Lower numbers appear first.",
+        }
+      - { label: Body, name: body, widget: markdown }
+
+  # ---------------------------------------------------------------------------
+  # RESEARCH — src/content/research
+  # ---------------------------------------------------------------------------
+  - name: research
+    label: Research
+    label_singular: Study
+    description: "Studies, frameworks, and data shown under /research."
+    folder: "src/content/research"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} — {{type}}"
+    sortable_fields: [date, title, type]
+    preview_path: "research/{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: true,
+          hint: "Publication date, e.g. 2025-10-15",
+        }
+      - label: Type
+        name: type
+        widget: select
+        hint: "Must be one of these — matches src/content.config.ts."
+        options:
+          - { label: Report, value: report }
+          - { label: Whitepaper, value: whitepaper }
+          - { label: Framework, value: framework }
+          - { label: Data, value: dataset }
+          - { label: Article, value: article }
+      - {
+          label: Abstract,
+          name: abstract,
+          widget: text,
+          hint: "A short summary shown in listings and previews.",
+        }
+      - {
+          label: Authors,
+          name: authors,
+          widget: list,
+          required: false,
+          default: [],
+          hint: "One name per line. Defaults to you.",
+        }
+      - {
+          label: Publisher / venue,
+          name: publisher,
+          widget: string,
+          required: false,
+          hint: "e.g. Ikhsan Communications, or a journal / conference.",
+        }
+      - label: Status
+        name: status
+        widget: select
+        default: published
+        options:
+          - { label: Published, value: published }
+          - { label: Ongoing, value: ongoing }
+          - { label: Working paper, value: working-paper }
+      - {
+          label: External link,
+          name: link,
+          widget: string,
+          required: false,
+          hint: "Optional DOI, PDF, or published URL.",
+        }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - {
+          label: Draft,
+          name: draft,
+          widget: boolean,
+          default: false,
+          hint: "Draft studies are hidden from the published site.",
+        }
+      - {
+          label: Cover image,
+          name: image,
+          widget: image,
+          required: false,
+          choose_url: false,
+        }
+      - { label: Body, name: body, widget: markdown }

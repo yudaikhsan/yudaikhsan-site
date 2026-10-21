@@ -1,0 +1,294 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+
+const features = [
+  {
+    title: 'Keyboard Navigation',
+    items: [
+      'Skip to main content link (try Tab on any page)',
+      'Full keyboard navigation through all menus and links',
+      'Visible focus indicators with proper contrast',
+      'Escape key closes the mobile menu and dropdowns',
+      'Tab order follows the logical reading sequence',
+    ],
+  },
+  {
+    title: 'Screen Reader Support',
+    items: [
+      'Semantic HTML with proper landmarks (header, main, footer)',
+      'ARIA labels on navigation and interactive elements',
+      'Logical heading hierarchy (H1 → H2 → H3)',
+      'Descriptive alt text for all meaningful images',
+    ],
+  },
+  {
+    title: 'Visual Design',
+    items: [
+      'High contrast ratios (4.5:1 minimum for text)',
+      'Scalable text that works at 200% zoom',
+      'Dark and light mode with consistent contrast',
+      'Responsive design for all screen sizes',
+      'Colour is never the only way to convey information',
+    ],
+  },
+  {
+    title: 'Forms & Interactions',
+    items: [
+      'Clear labels for all form fields',
+      'Error messages with ARIA live regions',
+      'Accessible buttons with descriptive text',
+      'Loading states announced to screen readers',
+      'Form validation with helpful error messages',
+    ],
+  },
+];
+
+const pour = [
+  {
+    title: 'Perceivable',
+    body: 'Information and user interface components must be presentable in ways all users can perceive — text alternatives for images, captions for video, and sufficient colour contrast.',
+  },
+  {
+    title: 'Operable',
+    body: 'Interface components and navigation must be operable with a range of input methods, including keyboard, mouse, and assistive technologies.',
+  },
+  {
+    title: 'Understandable',
+    body: 'Content should be readable and predictable, with clear instructions and consistent navigation patterns.',
+  },
+  {
+    title: 'Robust',
+    body: 'Content must be robust enough to be interpreted reliably by a wide variety of user agents, including assistive technologies — using valid, semantic HTML.',
+  },
+];
+
+const examples = [
+  { label: 'Skip Navigation', body: 'Press Tab on any page to reveal the "Skip to main content" link.' },
+  { label: 'Mobile Menu', body: 'Fully keyboard accessible with proper ARIA labels and escape-key support.' },
+  { label: 'Contact Form', body: 'Every field has a label, inline error handling, and live regions for screen readers.' },
+  { label: 'Theme Toggle', body: 'Accessible dropdown with proper focus management and screen reader support.' },
+  { label: 'Image Alt Text', body: 'Every meaningful image has descriptive alternative text.' },
+  { label: 'Link Styling', body: 'Links stay distinguishable and keep proper contrast in both light and dark modes.' },
+  { label: 'Focus Indicators', body: 'All interactive elements have visible focus states that meet contrast requirements.' },
+];
+
+const tech = [
+  'HTML5 semantic markup',
+  'CSS3 and Tailwind for styling and layout',
+  'JavaScript for enhanced functionality',
+  'ARIA (Accessible Rich Internet Applications) attributes',
+];
+
+const assessment = [
+  'Self-evaluation using automated accessibility testing tools',
+  'Manual testing with keyboard-only navigation (Tab, Enter, Escape, arrow keys)',
+  'Screen reader testing with VoiceOver',
+  'Colour contrast analysis using WebAIM tools and browser dev tools',
+  'Mobile accessibility testing at various screen sizes',
+];
+
+const updated = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title="Accessibility"
+  description="My accessibility commitment and how this site is built to be usable by everyone."
+>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-12 text-center">
+        <h1 class="mb-4 text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          My Accessibility Commitment
+        </h1>
+        <p class="text-lg text-muted-foreground">
+          As a communication consultant who believes clear information is a right,<br />
+          I've built this website to be accessible to everyone.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        <!-- Commitment -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">My Commitment</div>
+          </div>
+          <div class="p-6 pt-0">
+            <p class="mb-4">
+              I believe good content goes beyond clarity. Information should serve everyone and be
+              accessible regardless of ability or the technology used to reach the web.
+            </p>
+            <p>
+              This website reflects that commitment in both content and design, targeting WCAG 2.1
+              AA throughout so that whether you use a screen reader, navigate by keyboard, or rely
+              on high-contrast modes, you can access all the information and functionality here.
+            </p>
+          </div>
+        </div>
+
+        <!-- Conformance -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">Conformance Status</div>
+          </div>
+          <div class="p-6 pt-0">
+            <div class="space-y-4">
+              <p>
+                The Web Content Accessibility Guidelines (WCAG) define requirements for designers
+                and developers to improve accessibility for people with disabilities, across three
+                levels of conformance: Level A, Level AA, and Level AAA.
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="badge badge-secondary">WCAG 2.1 AA</span>
+                <span class="text-sm text-muted-foreground">
+                  This website aims to conform to WCAG 2.1 Level AA standards.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">
+              Accessibility Features
+            </div>
+          </div>
+          <div class="p-6 pt-0">
+            <div class="grid gap-4 md:grid-cols-2">
+              {
+                features.map((group) => (
+                  <div class="space-y-3">
+                    <h4 class="font-semibold">{group.title}</h4>
+                    <ul class="space-y-1 text-sm text-muted-foreground">
+                      {group.items.map((item) => (
+                        <li>• {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- POUR -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">POUR Principles</div>
+          </div>
+          <div class="p-6 pt-0">
+            <div class="grid gap-6 md:grid-cols-2">
+              {
+                pour.map((item) => (
+                  <div class="space-y-3">
+                    <h4 class="font-semibold text-primary">{item.title}</h4>
+                    <p class="text-sm text-muted-foreground">{item.body}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Real examples -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">
+              Real Examples from This Website
+            </div>
+          </div>
+          <div class="p-6 pt-0">
+            <p class="mb-4 text-sm text-muted-foreground">
+              Here are specific accessibility features implemented on this website:
+            </p>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              {
+                examples.map((item) => (
+                  <li>
+                    • <strong>{item.label}:</strong> {item.body}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">Feedback &amp; Support</div>
+          </div>
+          <div class="p-6 pt-0">
+            <p class="mb-4">
+              I welcome your feedback on the accessibility of this website. If you encounter a
+              barrier or have a suggestion, please let me know:
+            </p>
+            <div class="space-y-2">
+              <p>
+                <strong>Email:</strong>
+                <a href={`mailto:${site.email}?subject=Accessibility Feedback`} class="text-primary hover:underline">
+                  {site.email}
+                </a>
+              </p>
+              <p><strong>Subject Line:</strong> Accessibility Feedback</p>
+            </div>
+            <p class="mt-4 text-sm text-muted-foreground">
+              I aim to respond to accessibility feedback within 2 business days and will work to
+              address any issues promptly.
+            </p>
+          </div>
+        </div>
+
+        <!-- Technical specs -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">
+              Technical Specifications
+            </div>
+          </div>
+          <div class="p-6 pt-0">
+            <div class="space-y-4">
+              <p>
+                This website relies on the following technologies to work with the particular
+                combination of web browser and any assistive technologies or plugins installed on
+                your computer:
+              </p>
+              <ul class="space-y-1 text-sm text-muted-foreground">
+                {tech.map((item) => <li>• {item}</li>)}
+              </ul>
+              <p class="text-sm text-muted-foreground">
+                These technologies are relied upon for conformance with the accessibility standards
+                used.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assessment -->
+        <div class="card">
+          <div class="flex flex-col space-y-1.5 p-6">
+            <div class="text-2xl font-semibold leading-none tracking-tight">Assessment Approach</div>
+          </div>
+          <div class="p-6 pt-0">
+            <p class="mb-4">
+              I assessed the accessibility of this website through the following approaches:
+            </p>
+            <ul class="space-y-1 text-sm text-muted-foreground">
+              {assessment.map((item) => <li>• {item}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <div class="text-center text-sm text-muted-foreground">
+          <p>This accessibility statement was last updated on {updated}.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import type { ResearchIcon } from '../config';
+
+export interface Props {
+  slug: string;
+  title: string;
+  typeLabel: string;
+  abstract: string;
+  icon: ResearchIcon;
+  statusLabel: string;
+  date: string;
+}
+
+const { slug, title, typeLabel, abstract, icon, statusLabel, date } = Astro.props;
+---
+
+<a href={`/research/${slug}`} class="block h-full">
+  <article
+    class="card group relative h-full cursor-pointer transition-all duration-300 hover:scale-105 hover:border-green-400/50 hover:shadow-lg"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 rounded-lg bg-gradient-to-r from-green-400/0 to-green-400/0 transition-all duration-300 group-hover:from-green-400/5 group-hover:to-green-400/10"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 flex h-full flex-col p-6">
+      <div class="mb-4 flex items-center">
+        <Icon name={icon} class="mr-2 h-5 w-5 text-primary" />
+        <span class="text-sm text-muted-foreground">{typeLabel}</span>
+        <span class="mx-2 text-muted-foreground">•</span>
+        <span class="text-sm text-muted-foreground">{date}</span>
+      </div>
+      <h3 class="text-lg font-medium">{title}</h3>
+      <p class="mt-2 flex-grow text-sm text-muted-foreground">{abstract}</p>
+      <div class="mt-4 flex items-center justify-between font-mono tracking-tighter">
+        <span class="flex items-center">
+          Read the research
+          <Icon
+            name="arrow-right"
+            class="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+          />
+        </span>
+        <span class="text-xs text-muted-foreground">{statusLabel}</span>
+      </div>
+    </div>
+  </article>
+</a>

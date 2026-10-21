@@ -1,0 +1,5 @@
+# Copy to `.dev.vars` for local `npm run dev` (wrangler dev).
+# These are only used locally; production values are Cloudflare secrets.
+GITHUB_CLIENT_ID="your-client-id"
+GITHUB_CLIENT_SECRET="your-client-secret"
+ALLOWED_DOMAINS="your-site.pages.dev,localhost:8787"

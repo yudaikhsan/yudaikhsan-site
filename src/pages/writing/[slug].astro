@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { categoryLabels } from '../../config';
+import { formatDate, readingTime, isoDate } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const minutes = readingTime(post.body ?? '');
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.excerpt}
+  type="article"
+  image={post.data.image}
+>
+  <div class="min-h-screen bg-background">
+    <div class="container mx-auto px-4 py-8 md:px-6 md:py-12">
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-8">
+          <a
+            href="/writing"
+            class="group mb-6 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+          >
+            <Icon
+              name="arrow-right"
+              class="mr-2 h-4 w-4 rotate-180 transition-transform group-hover:-translate-x-1"
+            />
+            Back to Writing
+          </a>
+        </div>
+
+        <header class="mb-12">
+          <h1 class="mb-6 text-4xl font-bold font-mono leading-tight sm:text-5xl md:text-6xl">
+            {post.data.title}
+          </h1>
+
+          <div class="mb-8 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span class="inline-flex items-center rounded-full bg-muted px-3 py-1 text-muted-foreground">
+              {categoryLabels[post.data.category] ?? post.data.category}
+            </span>
+            <time datetime={isoDate(post.data.date)} class="flex items-center">
+              {formatDate(post.data.date)}
+            </time>
+            <span class="flex items-center">
+              <span class="mr-2 h-1 w-1 rounded-full bg-muted-foreground"></span>
+              {minutes} min read
+            </span>
+          </div>
+
+          {
+            post.data.tags.length > 0 && (
+              <div class="mb-8 flex flex-wrap gap-2">
+                {post.data.tags.map((tag) => (
+                  <span class="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )
+          }
+        </header>
+
+        <article
+          class="prose-enhanced"
+          aria-label={`Article content: ${post.data.title}`}
+        >
+          <Content />
+        </article>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

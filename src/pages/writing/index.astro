@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { categoryLabels } from '../../config';
+import { formatDate, readingTime, isoDate } from '../../lib/utils';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const categoryIcon: Record<string, 'file-text' | 'send' | 'shield-check' | 'sparkles'> = {
+  'media-relations': 'send',
+  'crisis-comms': 'shield-check',
+  'brand-strategy': 'sparkles',
+  'personal-essays': 'file-text',
+};
+---
+
+<BaseLayout
+  title="Writings"
+  description="Notes on media relations, crisis comms, and brand strategy — lessons from 11 years of practice."
+>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-12 space-y-4 text-center">
+        <h1 class="text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          Writings
+        </h1>
+        <p class="mx-auto max-w-[700px] font-mono text-muted-foreground md:text-xl">
+          My personal writings contain my thoughts on media relations, crisis comms, and brand strategy.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        {
+          posts.map((post) => (
+            <article class="border-b border-border pb-8 last:border-0">
+              <div class="mb-2 flex items-center text-sm font-mono text-muted-foreground">
+                <Icon
+                  name={categoryIcon[post.data.category] ?? 'file-text'}
+                  class="mr-2 h-4 w-4 text-primary"
+                />
+                <span>{categoryLabels[post.data.category] ?? post.data.category}</span>
+                <span class="mx-2">•</span>
+                <time datetime={isoDate(post.data.date)}>{formatDate(post.data.date)}</time>
+                <span class="mx-2">•</span>
+                <span>{readingTime(post.body ?? '')} min read</span>
+              </div>
+              <h2 class="mb-2 text-xl font-medium font-sans">
+                <a href={`/writing/${post.id}`} class="hover:text-primary">
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="mb-4 font-mono tracking-tighter text-muted-foreground">
+                {post.data.excerpt}
+              </p>
+              <a href={`/writing/${post.id}`} class="btn btn-link">
+                Read this writing
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>

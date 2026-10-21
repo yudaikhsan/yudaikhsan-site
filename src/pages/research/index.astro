@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  researchStatusLabels,
+  researchTypeIcon,
+  researchTypeLabels,
+} from '../../config';
+import { formatDate, isoDate } from '../../lib/utils';
+
+const items = (await getCollection('research', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout
+  title="Research"
+  description="Studies, frameworks, and data on media relations, crisis comms, and brand strategy."
+>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-12 space-y-4 text-center">
+        <h1 class="text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          Research
+        </h1>
+        <p class="mx-auto max-w-[700px] font-mono text-muted-foreground md:text-xl">
+          Studies, frameworks, and data on how communication actually changes minds — the evidence
+          behind the practice.
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        {
+          items.map((item) => (
+            <article class="border-b border-border pb-8 last:border-0">
+              <div class="mb-2 flex flex-wrap items-center text-sm font-mono text-muted-foreground">
+                <Icon
+                  name={researchTypeIcon[item.data.type] ?? 'microscope'}
+                  class="mr-2 h-4 w-4 text-primary"
+                />
+                <span>{researchTypeLabels[item.data.type] ?? item.data.type}</span>
+                <span class="mx-2">•</span>
+                <span>{researchStatusLabels[item.data.status] ?? item.data.status}</span>
+                <span class="mx-2">•</span>
+                <time datetime={isoDate(item.data.date)}>{formatDate(item.data.date)}</time>
+              </div>
+              <h2 class="mb-2 text-xl font-medium font-sans">
+                <a href={`/research/${item.id}`} class="hover:text-primary">
+                  {item.data.title}
+                </a>
+              </h2>
+              <p class="mb-2 font-mono tracking-tighter text-muted-foreground">
+                {item.data.abstract}
+              </p>
+              {item.data.authors.length > 0 && (
+                <p class="mb-4 text-sm text-muted-foreground">
+                  {item.data.authors.join(', ')}
+                  {item.data.publisher && <span> · {item.data.publisher}</span>}
+                </p>
+              )}
+              <div class="flex flex-wrap items-center gap-4">
+                <a href={`/research/${item.id}`} class="btn btn-link">
+                  Read the research
+                </a>
+                {item.data.link && (
+                  <a
+                    href={item.data.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center text-sm font-mono tracking-tighter text-muted-foreground hover:text-foreground"
+                  >
+                    External source
+                    <Icon name="external-link" class="ml-1 h-4 w-4" />
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>

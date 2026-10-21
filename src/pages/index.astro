@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ResearchCard from '../components/ResearchCard.astro';
+import Icon from '../components/Icon.astro';
+import {
+  categoryLabels,
+  researchStatusLabels,
+  researchTypeIcon,
+  researchTypeLabels,
+  site,
+} from '../config';
+import { formatDate } from '../lib/utils';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const projects = (await getCollection('projects')).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order
+);
+const research = (await getCollection('research', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const latestPosts = posts.slice(0, 3);
+const featuredProjects = projects.slice(0, 3);
+const latestResearch = research.slice(0, 3);
+---
+
+<BaseLayout>
+  <div class="flex flex-col">
+    <!-- Hero -->
+    <section class="py-20 md:py-28" aria-labelledby="hero-heading">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="mb-2 flex justify-center">
+          <div class="relative h-20 w-20 overflow-hidden rounded-full">
+            <img
+              src="/images/avatar.svg"
+              alt={`${site.name} avatar`}
+              class="h-full w-full object-cover"
+              width="80"
+              height="80"
+            />
+          </div>
+        </div>
+        <div class="flex flex-col items-center space-y-4">
+          <h1
+            id="hero-heading"
+            class="text-center text-3xl font-bold font-mono tracking-tight sm:text-4xl md:text-5xl"
+          >
+            {site.tagline}
+          </h1>
+          <p
+            class="mb-4 max-w-[600px] text-center font-mono tracking-tighter text-muted-foreground md:text-xl"
+          >
+            I'm a communication consultant with 11 years across PR, media relations, and brand
+            storytelling. I help people and organisations say the right thing at the right moment —
+            and make sure it lands.
+          </p>
+          <div class="flex justify-center">
+            <a href="/contact" class="font-mono tracking-tighter">Have a project? Let's talk.</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expertise -->
+    <section class="bg-accent py-16" aria-labelledby="expertise-heading">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="mx-auto max-w-3xl">
+          <h2
+            id="expertise-heading"
+            class="mb-6 text-center text-2xl font-bold font-mono tracking-tight sm:text-3xl md:text-4xl"
+          >
+            Being a Full-stack Communicator
+          </h2>
+          <div class="mb-8 flex justify-center">
+            <div class="relative aspect-video w-full max-w-xl overflow-hidden rounded-xl shadow-lg">
+              <img
+                src="/images/profile.svg"
+                alt={`${site.name} working as a writer and developer`}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+          <div class="mx-auto font-mono text-sm tracking-tighter text-muted-foreground">
+            <p>
+              Hi, my name is {site.name}, and the photo above is the kind of thing I do nowadays —
+              hosting events, moderating panels, and talking shop with like-minded communicators.
+            </p>
+            <p>
+              I started out as a journalist and copywriter, curious about how words shape the way we
+              see the world. As a
+              <span class="font-medium text-primary">PR strategist</span>, I learned that the right
+              message at the right moment can turn a sceptical audience into a loyal one.
+            </p>
+            <p class="mt-6">
+              But reputation isn't built on press releases alone. So I moved deeper into strategy —
+              research, data, and planning — to understand what actually changes minds.
+            </p>
+            <p class="mt-6">
+              Now as a
+              <span class="font-medium text-primary">Communication Consultant</span>, I connect
+              insight to execution: earned, owned, and paid media working together toward outcomes
+              you can measure.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Writings -->
+    <section class="py-12 md:py-16" aria-labelledby="writings-heading">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+          <h2 id="writings-heading" class="text-2xl font-bold font-mono tracking-tighter sm:text-3xl">
+            My Writings
+          </h2>
+        </div>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          {
+            latestPosts.map((post) => (
+              <PostCard
+                slug={post.id}
+                title={post.data.title}
+                category={categoryLabels[post.data.category] ?? post.data.category}
+                excerpt={post.data.excerpt}
+              />
+            ))
+          }
+        </div>
+        <div class="mt-8 flex justify-center font-mono">
+          <a href="/writing" data-button class="btn btn-md btn-outline">Read All Posts</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="bg-secondary py-12 md:py-16" aria-labelledby="projects-heading">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+          <h2
+            id="projects-heading"
+            class="text-2xl font-bold font-mono tracking-tighter sm:text-3xl"
+          >
+            Featured Projects
+          </h2>
+          <p class="max-w-[700px] font-mono tracking-tighter text-muted-foreground">
+            A selection of recent campaigns and communications work.
+          </p>
+        </div>
+        <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {
+            featuredProjects.map((project) => (
+              <ProjectCard
+                slug={project.id}
+                title={project.data.title}
+                description={project.data.description}
+                image={project.data.image}
+              />
+            ))
+          }
+        </div>
+        <div class="mt-8 flex justify-center font-mono">
+          <a href="/portfolio" data-button class="btn btn-md btn-outline">Read All Projects</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research -->
+    <section class="py-12 md:py-16" aria-labelledby="research-heading">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+          <h2
+            id="research-heading"
+            class="text-2xl font-bold font-mono tracking-tighter sm:text-3xl"
+          >
+            Research
+          </h2>
+          <p class="max-w-[700px] font-mono tracking-tighter text-muted-foreground">
+            Studies, frameworks, and data on how communication actually changes minds — the evidence
+            behind the practice.
+          </p>
+        </div>
+        <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {
+            latestResearch.map((item) => (
+              <ResearchCard
+                slug={item.id}
+                title={item.data.title}
+                abstract={item.data.abstract}
+                typeLabel={researchTypeLabels[item.data.type] ?? item.data.type}
+                icon={researchTypeIcon[item.data.type] ?? 'microscope'}
+                statusLabel={researchStatusLabels[item.data.status] ?? item.data.status}
+                date={formatDate(item.data.date)}
+              />
+            ))
+          }
+        </div>
+        <div class="mt-8 flex justify-center font-mono">
+          <a href="/research" data-button class="btn btn-md btn-outline">Read All Research</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-secondary py-12 md:py-16">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col items-center justify-center space-y-4 text-center">
+          <h2 class="text-2xl font-bold font-mono tracking-tighter sm:text-3xl">
+            Need a helping hand?
+          </h2>
+          <p class="max-w-[600px] font-mono tracking-tighter text-muted-foreground">
+            I run a communications studio called
+            <a href={site.studioUrl} class="font-medium" target="_blank" rel="noopener noreferrer">
+              {site.studioName}.
+            </a>
+            Book a discovery call to explore how we can sharpen your brand's story and earn the
+            coverage it deserves.
+          </p>
+          <div class="pt-4">
+            <a
+              href={site.calUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-button
+              class="btn btn-lg btn-primary font-mono tracking-tighter"
+            >
+              Schedule a Discovery Call
+              <Icon name="arrow-up-right" class="ml-1 h-[18px] w-[18px]" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

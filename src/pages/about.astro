@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+
+const publications = [
+  { label: "Master's in Communication Management — Universitas Indonesia (2022)", url: '#' },
+  { label: '“+” Project by Kemendagri RI — award-winning integrated campaign', url: '#' },
+  { label: 'Kompas.com — Kalijodo coverage, one of its most-read stories', url: '#' },
+];
+
+const skills = [
+  'Brand Strategy',
+  'Media Relations',
+  'Crisis Communication',
+  'Strategic Communications',
+  'Media Planning',
+  'SEO — On-Page & Link Building',
+  'Community Engagement',
+  'Paid & Programmatic Media',
+];
+
+const approach = [
+  {
+    title: 'Audience-First',
+    body: "Every message starts with understanding who's listening — their concerns, their context, and what would genuinely make them care. Clarity beats cleverness every time.",
+  },
+  {
+    title: 'Evidence-Led',
+    body: "Good communications is measurable. I approach each campaign with clear objectives, track what actually moves, and adjust with data rather than instinct alone.",
+  },
+  {
+    title: 'Collaborative',
+    body: "The best outcomes come from teams that trust each other. I work closely with brand, legal, and leadership to keep one clear voice across every channel.",
+  },
+];
+---
+
+<BaseLayout title="About" description={`About ${site.name} — ${site.role}.`}>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-12 space-y-4">
+        <h1 class="text-3xl font-medium font-sans tracking-tighter sm:text-4xl md:text-5xl">
+          About Me
+        </h1>
+        <p class="font-mono tracking-tighter text-muted-foreground md:text-xl">{site.role}</p>
+      </div>
+
+      <div class="grid items-start gap-12 md:grid-cols-2 md:gap-16">
+        <div class="relative aspect-square overflow-hidden rounded-lg">
+          <img
+            src="/images/profile.svg"
+            alt={`${site.name} portrait`}
+            class="h-full w-full object-cover"
+          />
+        </div>
+
+        <div class="space-y-6">
+          <p class="font-mono tracking-tighter text-muted-foreground md:text-base">
+            Hello! I'm {site.name}, a communication consultant and strategist with 11 years across
+            PR, media relations, and brand storytelling.
+          </p>
+          <p class="font-mono tracking-tighter text-muted-foreground md:text-base">
+            From crisis comms to national campaigns, I turn complex ideas into clear, credible
+            narratives — and back them with data you can defend in the boardroom.
+          </p>
+          <p class="font-mono tracking-tighter text-muted-foreground md:text-base italic">
+            Fun fact: I started out as a journalist at Kompas.com, so I've sat on both sides of the
+            pitch — which means I know exactly what makes a story run, and what makes it get
+            killed<br /><br />—all while delivering results.
+          </p>
+
+          <h2 class="font-mono font-bold">Publication and Achievement</h2>
+          <ul>
+            {
+              publications.map((pub) => (
+                <li class="font-mono tracking-tighter text-muted-foreground hover:underline md:text-base">
+                  <span class="mr-2 text-primary" aria-hidden="true">
+                    •
+                  </span>
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer">
+                    {pub.label}
+                  </a>
+                  <br />
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="pt-4">
+            <h2 class="mb-4 text-xl font-medium font-sans">Skills &amp; Expertise</h2>
+            <ul class="grid grid-cols-2 gap-2 font-mono tracking-tighter">
+              {
+                skills.map((skill) => (
+                  <li class="flex items-center">
+                    <span class="mr-2 text-primary" aria-hidden="true">
+                      •
+                    </span>
+                    {skill}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 space-y-8">
+        <h2 class="text-2xl font-medium font-sans tracking-tighter">My Approach</h2>
+        <div class="grid gap-8 md:grid-cols-3">
+          {
+            approach.map((item) => (
+              <div class="space-y-3">
+                <h3 class="text-xl font-medium">{item.title}</h3>
+                <p class="font-mono tracking-tighter text-muted-foreground">{item.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <h2 class="mb-4 text-2xl font-medium font-sans tracking-tighter">Let's Not Rush Things</h2>
+        <p class="mb-4 font-mono tracking-tighter text-muted-foreground">
+          You wouldn't kiss someone on the first date (unless it's really going well), right?
+        </p>
+        <p class="mb-4 font-mono tracking-tighter text-muted-foreground">
+          Same goes for hiring a communication partner. Take your time, poke around my site, read a
+          little, get a feel for my style.
+        </p>
+        <p class="mb-4 font-mono tracking-tighter text-muted-foreground">
+          If something clicks and you think I might be the one (for your writing needs, of course),
+          slide into my
+          <a href="/contact" class="text-primary underline hover:no-underline">contact page</a>.
+          Let's talk.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

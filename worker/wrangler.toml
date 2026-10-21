@@ -1,0 +1,18 @@
+name = "sveltia-cms-auth"
+main = "index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# Secrets (do NOT put real values here — set them with the CLI):
+#   npx wrangler secret put GITHUB_CLIENT_ID
+#   npx wrangler secret put GITHUB_CLIENT_SECRET
+#
+# For local `wrangler dev`, put them in .dev.vars instead (see .dev.vars.example).
+
+[vars]
+# Comma-separated list of sites allowed to use this Worker.
+# Example: "my-site.pages.dev,my-site.com"
+ALLOWED_DOMAINS = "yudhaikhsan.pages.dev"
+
+[observability]
+enabled = true

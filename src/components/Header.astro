@@ -1,0 +1,125 @@
+---
+import { nav, site } from '../config';
+import Icon from './Icon.astro';
+import ModeToggle from './ModeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => path === href.replace(/\/$/, '');
+---
+
+<header class="border-b border-border" role="banner">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <div class="flex items-center">
+        <a
+          href="/"
+          class="text-xl font-medium font-mono tracking-tighter text-primary"
+          aria-label={`${site.name} - Home`}
+        >
+          {site.name}
+        </a>
+      </div>
+
+      <nav class="hidden md:block" role="navigation" aria-label="Main navigation">
+        <ul class="flex space-x-8" role="menubar">
+          {
+            nav.map((item) => (
+              <li role="none">
+                <a
+                  href={item.href}
+                  role="menuitem"
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  class={`text-sm font-medium font-mono tracking-tighter ${
+                    isActive(item.href)
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center space-x-4">
+        <ModeToggle />
+        <div class="md:hidden">
+          <button
+            type="button"
+            class="btn btn-ghost btn-icon h-9 w-9"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            data-menu-trigger
+          >
+            <Icon name="menu" class="h-5 w-5" data-menu-closed />
+            <Icon name="x" class="hidden h-5 w-5" data-menu-open />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden" role="navigation" aria-label="Mobile navigation">
+    <div class="space-y-1 px-4 pb-3 pt-2">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class={`block py-2 text-base ${
+              isActive(item.href) ? 'text-primary font-medium' : 'text-muted-foreground'
+            }`}
+          >
+            {item.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const trigger = document.querySelector('[data-menu-trigger]');
+    const panel = document.querySelector('[data-menu-panel]') || document.getElementById('mobile-menu');
+    if (!trigger || !panel) return;
+
+    const iconClosed = trigger.querySelector('[data-menu-closed]');
+    const iconOpen = trigger.querySelector('[data-menu-open]');
+
+    const setOpen = (open) => {
+      panel.classList.toggle('hidden', !open);
+      trigger.setAttribute('aria-expanded', String(open));
+      trigger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (iconClosed) iconClosed.classList.toggle('hidden', open);
+      if (iconOpen) iconOpen.classList.toggle('hidden', !open);
+    };
+
+    setOpen(false);
+
+    trigger.addEventListener('click', () => {
+      setOpen(panel.classList.contains('hidden'));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.classList.contains('hidden')) {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+
+    document.addEventListener('mousedown', (e) => {
+      if (
+        !panel.classList.contains('hidden') &&
+        !panel.contains(e.target) &&
+        !trigger.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens — copied 1:1 from the original site so the palette, radii and
+   component colours are identical.
+   --------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: Literata, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* -------------------------------------------------------------------------
+     Links — every <a> that is *not* a button is green with an animated
+     underline that grows on hover. Detected with `a:not([data-button])`, which
+     is exactly how the original distinguishes buttons from inline links.
+     ------------------------------------------------------------------------- */
+  a:not([data-button]) {
+    position: relative;
+    color: rgb(21 128 61); /* green-700 */
+    text-decoration-line: none;
+    transition: color 0.3s ease-in-out;
+  }
+  .dark a:not([data-button]) {
+    color: rgb(22 163 74); /* green-600 */
+  }
+  a:not([data-button]):after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease-in-out;
+  }
+  a:not([data-button]):hover {
+    color: rgb(22 101 52); /* green-800 */
+  }
+  .dark a:not([data-button]):hover {
+    color: rgb(34 197 94); /* green-500 */
+  }
+  a:not([data-button]):hover:after {
+    width: 100%;
+  }
+  a:not([data-button]):active {
+    color: rgb(20 83 45); /* green-900 */
+  }
+  .dark a:not([data-button]):active {
+    color: rgb(74 222 128); /* green-400 */
+  }
+
+  /* Accessibility: keep a visible underline for keyboard users, without
+     changing the mouse look above. Remove this block if you prefer the
+     original's colour-only affordance. */
+  a:not([data-button]):focus-visible:after {
+    width: 100%;
+  }
+
+  ::selection {
+    background-color: rgb(34 197 94 / 0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a:not([data-button]),
+    a:not([data-button]):after {
+      transition: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable component classes (shadcn/ui equivalents)
+   --------------------------------------------------------------------------- */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium
+           transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+           focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none
+           disabled:opacity-50;
+  }
+  .btn-lg {
+    @apply h-11 px-8 text-base;
+  }
+  .btn-md {
+    @apply h-10 px-4 py-2;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+  .btn-link {
+    @apply h-auto p-0 text-sm text-primary underline-offset-4 hover:underline;
+  }
+  .btn-icon {
+    @apply h-9 w-9 p-0;
+  }
+
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+
+  /* Badge (shadcn `variant="secondary"`) */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+           transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+  .badge-secondary {
+    @apply border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Article typography — `.prose-enhanced` matches the original site exactly:
+   Literata serif, 18px, 1.7 line-height, serif headings, mono code.
+   --------------------------------------------------------------------------- */
+.prose-enhanced {
+  font-family: Literata, serif;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+  max-width: none;
+  font-size: 1.125rem;
+}
+.prose-enhanced h1 {
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: Literata, serif;
+}
+.prose-enhanced h2 {
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 600;
+  font-family: Literata, serif;
+}
+.prose-enhanced h3 {
+  margin-bottom: 0.75rem;
+  margin-top: 1.25rem;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  font-weight: 600;
+  font-family: Literata, serif;
+}
+.prose-enhanced h4 {
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  font-weight: 500;
+  font-family: Literata, serif;
+}
+.prose-enhanced p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.prose-enhanced ul,
+.prose-enhanced ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+.prose-enhanced ul {
+  list-style-type: disc;
+}
+.prose-enhanced ol {
+  list-style-type: decimal;
+}
+.prose-enhanced li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+.prose-enhanced blockquote {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left-width: 4px;
+  border-color: hsl(var(--primary));
+  padding-left: 1.5rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+.prose-enhanced code {
+  border-radius: 0.25rem;
+  background-color: hsl(var(--muted));
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
+}
+.prose-enhanced pre {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  border-radius: var(--radius);
+  background-color: hsl(var(--muted));
+  padding: 1rem;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
+}
+.prose-enhanced pre code {
+  background-color: transparent;
+  padding: 0;
+}
+.prose-enhanced a {
+  position: relative;
+  color: rgb(21 128 61);
+  text-decoration-line: none;
+  transition: color 0.3s ease-in-out;
+}
+.dark .prose-enhanced a {
+  color: rgb(22 163 74);
+}
+.prose-enhanced a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease-in-out;
+}
+.prose-enhanced a:hover {
+  color: rgb(22 101 52);
+}
+.dark .prose-enhanced a:hover {
+  color: rgb(34 197 94);
+}
+.prose-enhanced a:hover:after {
+  width: 100%;
+}
+.prose-enhanced img {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius);
+  max-width: 100%;
+  height: auto;
+}
+.prose-enhanced hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-color: hsl(var(--border));
+}
+.prose-enhanced strong {
+  font-weight: 700;
+}
+.prose-enhanced table {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+.prose-enhanced th,
+.prose-enhanced td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}

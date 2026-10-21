@@ -1,0 +1,104 @@
+---
+import { site } from '../config';
+
+const endpoint = site.forms.newsletterEndpoint || 'https://api.web3forms.com/submit';
+const key = site.forms.web3formsKey;
+---
+
+<div class="w-full max-w-md space-y-2" data-newsletter>
+  <div
+    class="hidden font-mono text-green-500"
+    role="status"
+    aria-live="polite"
+    data-newsletter-success
+  >
+    Thanks for subscribing! I'll definitely send you some emails.
+  </div>
+
+  <form
+    class="flex w-full max-w-sm flex-col gap-2 font-mono tracking-tighter"
+    aria-label="Newsletter subscription form"
+    data-newsletter-form
+    data-endpoint={endpoint}
+    data-key={key}
+    novalidate
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="Your email address"
+      required
+      autocomplete="email"
+      class="flex h-10 w-full flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      aria-label="Email address for newsletter subscription"
+      aria-describedby="email-error"
+    />
+    <!-- honeypot -->
+    <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+    <button type="submit" class="btn btn-md btn-primary">
+      <span data-newsletter-label>Subscribe</span>
+    </button>
+    <div
+      id="email-error"
+      class="mt-2 hidden text-sm text-red-500"
+      role="alert"
+      aria-live="polite"
+      data-newsletter-error
+    ></div>
+  </form>
+
+  <p class="text-xs font-mono tracking-tighter text-muted-foreground">
+    I respect your privacy. You can unsubscribe at any time.
+  </p>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-newsletter]');
+    if (!root) return;
+    const form = root.querySelector('[data-newsletter-form]');
+    const success = root.querySelector('[data-newsletter-success]');
+    const errorBox = root.querySelector('[data-newsletter-error]');
+    const label = root.querySelector('[data-newsletter-label]');
+    const btn = form.querySelector('button[type="submit"]');
+    const key = form.dataset.key;
+
+    const showError = (msg) => {
+      errorBox.textContent = msg;
+      errorBox.classList.toggle('hidden', !msg);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]').value.trim();
+      showError('');
+      if (!email) return showError('Please enter your email address.');
+      if (!key) return showError('Newsletter is not configured yet. Add PUBLIC_WEB3FORMS_KEY.');
+      if (!form.checkValidity()) return showError('Please enter a valid email address.');
+
+      btn.disabled = true;
+      label.textContent = 'Subscribing...';
+      try {
+        const res = await fetch(form.dataset.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: key,
+            subject: 'New newsletter subscriber',
+            from_name: 'Newsletter',
+            email,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong');
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Failed to subscribe');
+      } finally {
+        btn.disabled = false;
+        label.textContent = 'Subscribe';
+      }
+    });
+  })();
+</script>

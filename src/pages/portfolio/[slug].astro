@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, description, image } = project.data;
+---
+
+<BaseLayout title={title} description={description} type="article" image={image}>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-8">
+        <a
+          href="/portfolio"
+          class="mb-4 flex items-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+        >
+          <Icon name="arrow-right" class="mr-2 h-4 w-4 rotate-180" />
+          Back to Portfolio
+        </a>
+        <h1 class="mb-4 text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          {title}
+        </h1>
+        <p class="mb-6 text-lg text-muted-foreground">{description}</p>
+      </div>
+
+      <div class="mb-8">
+        <img src={image} alt={title} class="h-auto w-full rounded-lg shadow-lg" />
+      </div>
+
+      <div class="prose-enhanced max-w-none">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

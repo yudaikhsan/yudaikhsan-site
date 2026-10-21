@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" role="img" aria-label="Yudha Ikhsan profile placeholder">
+  <defs>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <radialGradient id="pglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#22c55e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#p)"/>
+  <rect width="1200" height="1200" fill="url(#pglow)"/>
+  <circle cx="600" cy="600" r="300" fill="none" stroke="#22c55e" stroke-opacity="0.28" stroke-width="2"/>
+  <circle cx="600" cy="600" r="424" fill="none" stroke="#22c55e" stroke-opacity="0.12" stroke-width="2"/>
+  <text x="600" y="575" text-anchor="middle" dominant-baseline="central" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="48" letter-spacing="1" fill="#f8fafc">communication consultant</text>
+  <text x="600" y="643" text-anchor="middle" dominant-baseline="central" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="34" fill="#22c55e">// yudhaikhsan.pages.dev</text>
+</svg>

@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order
+);
+---
+
+<BaseLayout
+  title="Portfolio"
+  description="A collection of campaigns and communications work across media relations, brand, and internal comms."
+>
+  <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-12 text-center">
+        <h1 class="mb-4 text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+          Portfolio
+        </h1>
+        <p class="text-lg text-muted-foreground">
+          A collection of campaigns and communications work across media relations, brand, and internal comms.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((project) => (
+            <ProjectCard
+              slug={project.id}
+              title={project.data.title}
+              description={project.data.description}
+              image={project.data.image}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>
