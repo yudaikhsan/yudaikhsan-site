@@ -156,18 +156,36 @@ If no key is configured, the forms show a helpful notice instead of pretending t
 
 ## Deploy to Cloudflare Pages (free)
 
-1. Push this repo to GitHub.
-2. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** → pick the repo.
+The repo is ready on GitHub as **`yudaikhsan/yudaikhsan-site`**.
+
+1. Sign in at <https://dash.cloudflare.com> (free account).
+2. **Workers & Pages → Create → Pages → Connect to Git** → authorize GitHub, pick
+   **`yudaikhsan/yudaikhsan-site`** → **Begin setup**.
 3. Build settings:
    - **Framework preset:** Astro
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-4. **Save and Deploy** → you get `your-project.pages.dev` (free HTTPS).
-5. Add env vars from `.env` under *Settings → Environment variables*.
-6. Every push to `main` auto-deploys. *(Custom domain: Pages → Custom domains — free if
-   the domain is on Cloudflare; a `.com` costs ~$10–11/yr at Cloudflare Registrar.)*
+   - **Root directory:** leave blank (the repo root *is* the site)
+4. **Save and Deploy** — the first build takes 1–2 minutes.
+5. Your URL is `https://<project-name>.pages.dev`.
+   - To get **`yudhaikhsan.pages.dev`**, name the project **`yudhaikhsan`**.
+   - If that name is taken, choose another and update `SITE` in `astro.config.mjs`
+     **and** `PUBLIC_SITE_URL` (`.env` + the Pages env vars) to match.
 
-The same project also deploys to Netlify, Vercel, or GitHub Pages with no code changes.
+### Environment variables
+
+Everything except the forms has safe defaults, so you can deploy with none. Add these under
+**Settings → Environment variables → Production** when you need them:
+
+| Name | Value |
+| --- | --- |
+| `PUBLIC_WEB3FORMS_KEY` | your Web3Forms access key (contact + newsletter forms) |
+| `PUBLIC_SITE_URL` | `https://yudhaikhsan.pages.dev` (only if the project name differs) |
+
+> `PUBLIC_*` values are inlined at **build time**. After adding or changing one, trigger a
+> new deployment (Deployments → Retry, or push a commit).
+
+Every push to `main` auto-deploys.
 
 ---
 
