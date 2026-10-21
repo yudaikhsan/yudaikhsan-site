@@ -9,12 +9,12 @@ export const site = {
   name: env.PUBLIC_SITE_NAME || 'Yudha Ikhsan',
   tagline: env.PUBLIC_SITE_TAGLINE || 'Message-grade clarity. Media-grade reach.',
   role: env.PUBLIC_SITE_ROLE || 'Communication Consultant',
-  url: env.PUBLIC_SITE_URL || 'https://yudhaikhsan.pages.dev',
+  url: env.PUBLIC_SITE_URL || 'https://yudaikhsan-site.pages.dev',
   description:
     'Portfolio and writing by a communication strategist — brand storytelling, media relations, and content that moves people.',
   email: env.PUBLIC_SITE_EMAIL || 'yudha.ikhsan1993@gmail.com',
   studioName: env.PUBLIC_STUDIO_NAME || 'Ikhsan Communications',
-  studioUrl: env.PUBLIC_STUDIO_URL || 'https://yudhaikhsan.pages.dev',
+  studioUrl: env.PUBLIC_STUDIO_URL || 'https://yudaikhsan-site.pages.dev',
   calUrl: env.PUBLIC_CAL_URL || 'https://cal.com/yudhaikhsan/discovery',
   social: {
     github: env.PUBLIC_SOCIAL_GITHUB || 'https://github.com/yudaikhsan',

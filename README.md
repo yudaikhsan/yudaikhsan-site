@@ -97,7 +97,7 @@ browser’s File System Access API — **no proxy server and no `local_backend` 
 
 ### B. Online editing — easiest path: GitHub access token (no server)
 
-Once the site is deployed, open `https://your-site.pages.dev/admin` and choose
+Once the site is deployed, open `https://yudaikhsan-site.pages.dev/admin` and choose
 **“Sign in with Access Token”**. Create a **fine-grained personal access token** at
 GitHub → *Settings → Developer settings → Fine-grained tokens → Generate new token*:
 
@@ -117,7 +117,7 @@ editors, or you'd rather not manage a token). It needs the free Cloudflare Worke
 [`worker/`](worker/README.md):
 
 1. **Create a GitHub OAuth App** → GitHub → *Settings → Developer settings → OAuth Apps → New*:
-   - Homepage URL: `https://your-site.pages.dev`
+   - Homepage URL: `https://yudaikhsan-site.pages.dev`
    - Authorization callback URL: `https://<worker>.workers.dev/callback`
    - Save the **Client ID**, generate a **Client Secret**.
 2. **Deploy the Worker:**
@@ -130,10 +130,10 @@ editors, or you'd rather not manage a token). It needs the free Cloudflare Worke
    npx wrangler secret put GITHUB_CLIENT_SECRET
    ```
 
-   Set `ALLOWED_DOMAINS = "your-site.pages.dev"` in `worker/wrangler.toml`, then
+   Set `ALLOWED_DOMAINS = "yudaikhsan-site.pages.dev"` in `worker/wrangler.toml`, then
    `npx wrangler deploy` again.
 3. Put the Worker URL in `public/admin/config.yml` → `base_url`, commit and push.
-4. Open `https://your-site.pages.dev/admin` → **Log in with GitHub**.
+4. Open `https://yudaikhsan-site.pages.dev/admin` → **Log in with GitHub**.
 
 Full walk-through (OAuth App, secrets, local testing): **[`worker/README.md`](worker/README.md)**.
 
@@ -167,10 +167,10 @@ The repo is ready on GitHub as **`yudaikhsan/yudaikhsan-site`**.
    - **Build output directory:** `dist`
    - **Root directory:** leave blank (the repo root *is* the site)
 4. **Save and Deploy** — the first build takes 1–2 minutes.
-5. Your URL is `https://<project-name>.pages.dev`.
-   - To get **`yudhaikhsan.pages.dev`**, name the project **`yudhaikhsan`**.
-   - If that name is taken, choose another and update `SITE` in `astro.config.mjs`
-     **and** `PUBLIC_SITE_URL` (`.env` + the Pages env vars) to match.
+5. Your URL is `https://<project-name>.pages.dev` — **live now at
+   <https://yudaikhsan-site.pages.dev>**.
+   - If you rename the Pages project, update `SITE` in `astro.config.mjs` and
+     `PUBLIC_SITE_URL` (`.env` + the Pages env vars) to match.
 
 ### Environment variables
 
@@ -180,7 +180,7 @@ Everything except the forms has safe defaults, so you can deploy with none. Add 
 | Name | Value |
 | --- | --- |
 | `PUBLIC_WEB3FORMS_KEY` | your Web3Forms access key (contact + newsletter forms) |
-| `PUBLIC_SITE_URL` | `https://yudhaikhsan.pages.dev` (only if the project name differs) |
+| `PUBLIC_SITE_URL` | `https://yudaikhsan-site.pages.dev` (only if the project name differs) |
 
 > `PUBLIC_*` values are inlined at **build time**. After adding or changing one, trigger a
 > new deployment (Deployments → Retry, or push a commit).

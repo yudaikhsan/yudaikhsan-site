@@ -12,7 +12,7 @@ workers_dev = true
 [vars]
 # Comma-separated list of sites allowed to use this Worker.
 # Example: "my-site.pages.dev,my-site.com"
-ALLOWED_DOMAINS = "yudhaikhsan.pages.dev"
+ALLOWED_DOMAINS = "yudaikhsan-site.pages.dev"
 
 [observability]
 enabled = true

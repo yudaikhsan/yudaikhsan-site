@@ -1,8 +1,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// CHANGE THIS to your real domain before deploying.
-export const SITE = 'https://yudhaikhsan.pages.dev';
+// Real deployed URL (Cloudflare Pages project: yudaikhsan-site).
+export const SITE = 'https://yudaikhsan-site.pages.dev';
 
 export default defineConfig({
   site: SITE,
