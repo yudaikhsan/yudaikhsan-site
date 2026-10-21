@@ -98,7 +98,7 @@ browser’s File System Access API — **no proxy server and no `local_backend` 
 ### B. Online editing — easiest path: GitHub access token (no server)
 
 Once the site is deployed, open `https://yudaikhsan-site.pages.dev/admin` and click
-**“Sign In with Token”** (not “Sign in with GitHub” — see the note below). Create a
+**“Sign In Using Access Token”** (not “Sign In with GitHub” — see the note below). Create a
 **fine-grained personal access token** at
 GitHub → *Settings → Developer settings → Fine-grained tokens → Generate new token*:
 
@@ -111,9 +111,9 @@ Cloudflare Pages redeploys automatically. **No OAuth app, no Worker, no secrets.
 
 > The token lives only in your browser. Revoke it on GitHub whenever you like.
 >
-> **Why “Sign in with GitHub” says “Not Found”:** with no `base_url` configured, that
+> **Why “Sign In with GitHub” says “Not Found”:** with no `base_url` configured, that
 > button falls back to Netlify's OAuth client for backwards compatibility, which only
-> works on Netlify. Use **“Sign In with Token”**, or deploy the optional Worker below.
+> works on Netlify. Use **“Sign In Using Access Token”**, or deploy the optional Worker below.
 
 ### C. Optional — passwordless “Log in with GitHub” (OAuth Worker)
 
