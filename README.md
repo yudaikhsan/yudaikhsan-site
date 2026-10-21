@@ -95,32 +95,47 @@ browser’s File System Access API — **no proxy server and no `local_backend` 
 > Access API) — use the GitHub login below in those browsers. Changes made locally are
 > committed and pushed with your own Git client.
 
-### B. Online editing (login with GitHub)
+### B. Online editing — easiest path: GitHub access token (no server)
 
-1. **Edit `public/admin/config.yml`** → set `repo: yudaikhsan/yudaikhsan-site`.
-2. **Create a GitHub OAuth App** → GitHub → *Settings → Developer settings → OAuth Apps → New*:
+Once the site is deployed, open `https://your-site.pages.dev/admin` and choose
+**“Sign in with Access Token”**. Create a **fine-grained personal access token** at
+GitHub → *Settings → Developer settings → Fine-grained tokens → Generate new token*:
+
+- **Repository access:** only `yudaikhsan/yudaikhsan-site`
+- **Permissions:** *Contents* → **Read and write** (*Metadata* → Read is added automatically)
+- **Expiration:** your choice (90 days is fine — regenerate when it lapses)
+
+Paste the token into the editor and you're in. Sveltia commits straight to the repo and
+Cloudflare Pages redeploys automatically. **No OAuth app, no Worker, no secrets.**
+
+> The token lives only in your browser. Revoke it on GitHub whenever you like.
+
+### C. Optional — passwordless “Log in with GitHub” (OAuth Worker)
+
+Only needed if you want a one-click GitHub button instead of a token (e.g. several
+editors, or you'd rather not manage a token). It needs the free Cloudflare Worker in
+[`worker/`](worker/README.md):
+
+1. **Create a GitHub OAuth App** → GitHub → *Settings → Developer settings → OAuth Apps → New*:
    - Homepage URL: `https://your-site.pages.dev`
    - Authorization callback URL: `https://<worker>.workers.dev/callback`
    - Save the **Client ID**, generate a **Client Secret**.
-3. **Deploy the auth Worker** — a ready-to-use one is included in
-   [`worker/`](worker/README.md) (self-contained, free on Cloudflare):
+2. **Deploy the Worker:**
 
    ```bash
    cd worker
-   npm install
    npx wrangler login
-   npm run deploy
+   npx wrangler deploy
    npx wrangler secret put GITHUB_CLIENT_ID
    npx wrangler secret put GITHUB_CLIENT_SECRET
    ```
 
-   Then set `ALLOWED_DOMAINS = "your-site.pages.dev"` in `worker/wrangler.toml` and
-   `npm run deploy` again. *(Prefer a one-click option? You can also use the official
-   [`sveltia-cms-auth`](https://github.com/sveltia/sveltia-cms-auth).)*
-4. Put the Worker URL in `config.yml` → `base_url`.
-5. Open `https://your-site.pages.dev/admin` → **Log in with GitHub**.
+   Set `ALLOWED_DOMAINS = "your-site.pages.dev"` in `worker/wrangler.toml`, then
+   `npx wrangler deploy` again.
+3. Put the Worker URL in `public/admin/config.yml` → `base_url`, commit and push.
+4. Open `https://your-site.pages.dev/admin` → **Log in with GitHub**.
 
-Full walk-through (OAuth App setup, secrets, local testing): **[`worker/README.md`](worker/README.md)**.
+Full walk-through (OAuth App, secrets, local testing): **[`worker/README.md`](worker/README.md)**.
 
 > Just want to publish occasionally? You can also edit the Markdown directly on
 > github.com — no editor or Worker required.

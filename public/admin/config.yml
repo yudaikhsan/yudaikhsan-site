@@ -1,9 +1,9 @@
 # Sveltia CMS configuration for the portfolio site.
 # Docs: https://sveltiacms.app
 #
-# 1. Replace `repo` with your GitHub repo (owner/name).
-# 2. After deploying the auth Worker, replace `base_url` with its URL.
-# 3. Open /admin on your site and log in with GitHub.
+# 1. `repo` must point at your GitHub repository (owner/name).
+# 2. Open /admin on your site and sign in with an Access Token (easiest), or
+#    deploy `worker/` and set `base_url` below for one-click GitHub login.
 #
 # The categories below MUST match src/content.config.ts and the
 # `categoryLabels` map in src/config.ts, or the site build will fail.
@@ -12,9 +12,10 @@ backend:
   name: github
   repo: yudaikhsan/yudaikhsan-site
   branch: main
-  # Auth Worker URL (see README "Enable the /admin editor").
-  # Leave blank to use Sveltia's local editing mode in `npm run dev`.
-  base_url: https://sveltia-cms-auth.yudhaikhsan.workers.dev
+  # Auth Worker URL (optional — only for the passwordless "Log in with GitHub" button).
+  # Leave commented out to use "Sign in with Access Token" or local editing.
+  # See README → "Enable the /admin editor".
+  # base_url: https://sveltia-cms-auth.<your-subdomain>.workers.dev
   # commit_messages:
   #   create: "cms: create {{collection}} “{{slug}}”"
   #   update: "cms: update {{collection}} “{{slug}}”"
