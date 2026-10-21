@@ -2,7 +2,7 @@
 # Docs: https://sveltiacms.app
 #
 # 1. `repo` must point at your GitHub repository (owner/name).
-# 2. Open /admin on your site and sign in with an Access Token (easiest), or
+# 2. Open /admin on your site and sign in with a token (easiest), or
 #    deploy `worker/` and set `base_url` below for one-click GitHub login.
 #
 # The categories below MUST match src/content.config.ts and the
