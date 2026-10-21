@@ -83,11 +83,17 @@ no setup; online it needs a tiny free **Cloudflare Worker** to authenticate with
 
 ```bash
 npm run dev
-# open http://localhost:4321/admin
 ```
 
-In `public/admin/config.yml` leave `base_url` empty and add `local_backend: true` to edit
-files on your machine. (Sveltia will prompt you to run its local proxy.)
+Open **`http://localhost:4321/admin/index.html`** in a Chromium-based browser
+(Chrome, Edge, Brave), click **“Work with Local Repository”**, and select this
+project’s root folder. Sveltia writes straight to the Markdown files through the
+browser’s File System Access API — **no proxy server and no `local_backend` setting**.
+
+> Sveltia ignores `local_backend` and does not support `netlify-cms-proxy-server` /
+> `decap-server`. Local mode is Chromium-only (Firefox and Safari lack the File System
+> Access API) — use the GitHub login below in those browsers. Changes made locally are
+> committed and pushed with your own Git client.
 
 ### B. Online editing (login with GitHub)
 
