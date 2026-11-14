@@ -95,8 +95,11 @@ const key = site.forms.web3formsKey;
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong');
+        const contentType = res.headers.get('content-type') || '';
+        const data = contentType.includes('application/json') ? await res.json() : null;
+        if (!res.ok || (data && data.success === false)) {
+          throw new Error(data?.message || 'Something went wrong');
+        }
         form.classList.add('hidden');
         success.classList.remove('hidden');
       } catch (err) {
