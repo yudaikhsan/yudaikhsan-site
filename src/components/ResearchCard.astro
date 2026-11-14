@@ -15,9 +15,9 @@ export interface Props {
 const { slug, title, typeLabel, abstract, icon, statusLabel, date } = Astro.props;
 ---
 
-<a href={`/research/${slug}`} class="block h-full">
+<a href={`/research/${slug}`} class="card-link block h-full">
   <article
-    class="card group relative h-full cursor-pointer transition-all duration-300 hover:scale-105 hover:border-green-400/50 hover:shadow-lg"
+    class="card group relative h-full cursor-pointer transition-all duration-300 hover:border-green-400/50 hover:shadow-lg"
   >
     <div
       class="pointer-events-none absolute inset-0 rounded-lg bg-gradient-to-r from-green-400/0 to-green-400/0 transition-all duration-300 group-hover:from-green-400/5 group-hover:to-green-400/10"

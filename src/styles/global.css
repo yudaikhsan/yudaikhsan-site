@@ -121,6 +121,22 @@
     color: rgb(74 222 128); /* green-400 */
   }
 
+  a.card-link {
+    color: inherit;
+  }
+  a.card-link:hover,
+  a.card-link:active {
+    color: inherit;
+  }
+  a.card-link::after {
+    display: none;
+  }
+  a.card-link:focus-visible {
+    border-radius: var(--radius);
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 3px;
+  }
+
   /* Accessibility: keep a visible underline for keyboard users, without
      changing the mouse look above. Remove this block if you prefer the
      original's colour-only affordance. */
