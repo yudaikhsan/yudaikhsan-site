@@ -113,7 +113,9 @@ Cloudflare Pages redeploys automatically. **No OAuth app, no Worker, no secrets.
 >
 > **Why “Sign In with GitHub” says “Not Found”:** with no `base_url` configured, that
 > button falls back to Netlify's OAuth client for backwards compatibility, which only
-> works on Netlify. Use **“Sign In Using Access Token”**, or deploy the optional Worker below.
+> works on Netlify. This site disables that button until the optional Worker is configured.
+> Use **“Sign In Using Access Token”**, or deploy the optional Worker below and change
+> `auth_methods` to `[oauth, token]`.
 
 ### C. Optional — passwordless “Log in with GitHub” (OAuth Worker)
 

@@ -12,6 +12,9 @@ backend:
   name: github
   repo: yudaikhsan/yudaikhsan-site
   branch: main
+  # OAuth is disabled until a real Sveltia/Cloudflare auth Worker is configured.
+  # This prevents the default Netlify OAuth fallback from showing a broken button.
+  auth_methods: [token]
   # Auth Worker URL (optional — only for the passwordless "Log in with GitHub" button).
   # Leave commented out to use "Sign in with Access Token" or local editing.
   # See README → "Enable the /admin editor".
