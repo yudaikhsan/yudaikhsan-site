@@ -16,9 +16,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        // `.font-sans` is the system sans stack (used for headings like
-        // "About Me", "Quick Links", "Skills & Expertise").
+        // `.font-display` — Fraunces, the editorial display serif for headings.
+        display: ['Fraunces', 'Newsreader', 'ui-serif', 'Georgia', 'serif'],
+        // `.font-sans` — Inter, the UI/label sans (nav, buttons, meta, eyebrows).
         sans: [
+          'Inter',
           'ui-sans-serif',
           'system-ui',
           'sans-serif',
@@ -27,7 +29,7 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
-        // `.font-mono` is the UI copy stack: nav, buttons, hero, meta.
+        // `.font-mono` is kept only for actual code blocks.
         mono: [
           'ui-monospace',
           'SFMono-Regular',
@@ -38,8 +40,8 @@ export default {
           'Courier New',
           'monospace',
         ],
-        // Literata is the document serif used for the body and articles.
-        serif: ['Literata', 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
+        // `.font-serif` — Newsreader, the long-form document serif for body/articles.
+        serif: ['Newsreader', 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
