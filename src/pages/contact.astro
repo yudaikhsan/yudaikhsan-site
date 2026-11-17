@@ -115,7 +115,9 @@ const inputClass =
       <div class="mt-12 text-center">
         <p class="mb-4 text-muted-foreground">
           Or reach out directly at
-          <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>
+          <span data-direct-email data-parts={JSON.stringify(site.email.split('@'))}>
+            {site.email.replace('@', ' [at] ')}
+          </span>
         </p>
         <a
           href={site.calUrl}
@@ -133,6 +135,16 @@ const inputClass =
 
 <script is:inline>
   (() => {
+    // Discourage basic address scrapers while keeping a readable no-JS fallback.
+    const directEmail = document.querySelector('[data-direct-email]');
+    if (directEmail) {
+      const address = JSON.parse(directEmail.dataset.parts).join('@');
+      const link = document.createElement('a');
+      link.href = `mailto:${address}`;
+      link.className = 'text-primary hover:underline';
+      link.textContent = address;
+      directEmail.replaceWith(link);
+    }
     const form = document.querySelector('[data-contact-form]');
     if (!form) return;
     const key = form.dataset.key;
