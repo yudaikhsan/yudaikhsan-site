@@ -24,7 +24,7 @@ const categoryIcon: Record<string, 'file-text' | 'send' | 'shield-check' | 'spar
   <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
     <div class="mx-auto max-w-4xl">
       <div class="mb-12 space-y-4 text-center">
-        <h1 class="text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           Writings
         </h1>
         <p class="mx-auto max-w-[700px] font-mono text-muted-foreground md:text-xl">
@@ -47,7 +47,7 @@ const categoryIcon: Record<string, 'file-text' | 'send' | 'shield-check' | 'spar
                 <span class="mx-2">•</span>
                 <span>{readingTime(post.body ?? '')} min read</span>
               </div>
-              <h2 class="mb-2 text-xl font-medium font-sans">
+              <h2 class="mb-2 text-xl font-medium">
                 <a href={`/writing/${post.id}`} class="hover:text-primary">
                   {post.data.title}
                 </a>

@@ -98,15 +98,9 @@
   }
 
   /* The site used `.font-mono` as its all-purpose "UI copy" style (nav,
-     buttons, meta, hero). Remap it to the Inter UI sans so the whole site
-     converts at once; real code blocks keep their explicit Monaco stack in
-     `.prose-enhanced code/pre` and are unaffected. */
-  .font-mono {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  }
-  .font-sans {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  }
+     buttons, meta, hero). Tailwind's `fontFamily.mono` is now Inter, so no
+     base-layer override is needed; real code blocks keep their explicit
+     Monaco stack in `.prose-enhanced code/pre`. */
 
   /* -------------------------------------------------------------------------
      Links — every <a> that is *not* a button is green with an animated
@@ -243,8 +237,8 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Article typography — `.prose-enhanced` matches the original site exactly:
-   Literata serif, 18px, 1.7 line-height, serif headings, mono code.
+   Article typography — `.prose-enhanced`: Newsreader serif body, Fraunces
+   display headings, Inter section headings, mono code.
    --------------------------------------------------------------------------- */
 .prose-enhanced {
   font-family: 'Newsreader', Georgia, serif;
@@ -285,7 +279,7 @@
   font-size: 1.125rem;
   line-height: 1.4;
   font-weight: 500;
-  font-family: Literata, serif;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 .prose-enhanced p {
   margin-bottom: 1rem;

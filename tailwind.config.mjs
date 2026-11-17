@@ -29,17 +29,11 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
-        // `.font-mono` is kept only for actual code blocks.
-        mono: [
-          'ui-monospace',
-          'SFMono-Regular',
-          'Menlo',
-          'Monaco',
-          'Consolas',
-          'Liberation Mono',
-          'Courier New',
-          'monospace',
-        ],
+        // `.font-mono` — the site uses this class as its all-purpose "UI copy"
+        // style (nav, buttons, hero, meta, card CTAs). Remapped to the Inter UI
+        // sans so it reads as editorial type, not a code face. Real code blocks
+        // are unaffected: `.prose-enhanced code/pre` use an explicit Monaco stack.
+        mono: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         // `.font-serif` — Newsreader, the long-form document serif for body/articles.
         serif: ['Newsreader', 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
       },

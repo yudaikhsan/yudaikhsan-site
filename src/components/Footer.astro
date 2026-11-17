@@ -25,7 +25,7 @@ const year = new Date().getFullYear();
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <!-- Author -->
       <div class="space-y-4">
-        <h3 class="text-lg font-medium font-sans">{site.name}</h3>
+        <h3 class="text-lg font-medium">{site.name}</h3>
         <p class="text-sm font-mono tracking-tighter text-muted-foreground">
           {site.role}. I help brands earn trust through clear, credible storytelling — from
           strategy through to measurable coverage.
@@ -36,7 +36,7 @@ const year = new Date().getFullYear();
       <div class="flex flex-row gap-4 md:hidden">
         <div class="flex-1 space-y-8">
           <nav class="space-y-4" aria-labelledby="quick-links-mobile">
-            <h3 id="quick-links-mobile" class="text-lg font-medium font-sans">Quick Links</h3>
+            <h3 id="quick-links-mobile" class="text-lg font-medium">Quick Links</h3>
             <ul class="space-y-2 text-sm font-mono tracking-tighter">
               {
                 quickLinks.map((link) => (
@@ -64,7 +64,7 @@ const year = new Date().getFullYear();
 
       <!-- Quick links (desktop) -->
       <nav class="hidden space-y-4 md:block" aria-labelledby="quick-links-desktop">
-        <h3 id="quick-links-desktop" class="text-lg font-medium font-sans">Quick Links</h3>
+        <h3 id="quick-links-desktop" class="text-lg font-medium">Quick Links</h3>
         <ul class="space-y-2 text-sm font-mono tracking-tighter">
           {
             quickLinks.map((link) => (
@@ -80,7 +80,7 @@ const year = new Date().getFullYear();
 
       <!-- Newsletter -->
       <div class="space-y-4">
-        <h3 class="text-lg font-medium font-sans">Newsletter</h3>
+        <h3 class="text-lg font-medium">Newsletter</h3>
         <p class="text-sm font-mono tracking-tighter text-muted-foreground">
           Get occasional notes on communication, media, and the work behind the message.
         </p>

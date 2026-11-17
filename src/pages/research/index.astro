@@ -21,7 +21,7 @@ const items = (await getCollection('research', ({ data }) => !data.draft)).sort(
   <div class="container mx-auto px-4 py-12 md:px-6 md:py-16">
     <div class="mx-auto max-w-4xl">
       <div class="mb-12 space-y-4 text-center">
-        <h1 class="text-3xl font-bold font-mono tracking-tighter sm:text-4xl md:text-5xl">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           Research
         </h1>
         <p class="mx-auto max-w-[700px] font-mono text-muted-foreground md:text-xl">
@@ -45,7 +45,7 @@ const items = (await getCollection('research', ({ data }) => !data.draft)).sort(
                 <span class="mx-2">•</span>
                 <time datetime={isoDate(item.data.date)}>{formatDate(item.data.date)}</time>
               </div>
-              <h2 class="mb-2 text-xl font-medium font-sans">
+              <h2 class="mb-2 text-xl font-medium">
                 <a href={`/research/${item.id}`} class="hover:text-primary">
                   {item.data.title}
                 </a>
